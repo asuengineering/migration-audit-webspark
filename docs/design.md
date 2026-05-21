@@ -176,7 +176,7 @@ Examples may include:
 
 ## Menu family
 
-The menu report should capture menu structures and navigation relationships so WordPress menus can be intentionally recreated in Drupal.
+The menu report should capture menu structures, navigation relationships, and presentation behavior so WordPress menus can be intentionally recreated in Drupal.
 
 The report should capture:
 
@@ -187,12 +187,15 @@ The report should capture:
 - parent/child structure
 - item order
 - linkage to destination content where applicable
+- presentation role of each item
+- whether the item should behave as a link, an action control, a heading, or a home-link substitution
 - warning states for missing or broken targets
 
 The menu report should help identify:
 
 - menus that exist in the source but are not yet recreated in Drupal
 - menu items that point to missing or changed destinations
+- items that should render with a different presentation behavior than plain navigation links
 - structural differences that affect navigation fidelity
 
 Additional Drupal-specific menu metadata may optionally be captured in `details_json` payloads.
@@ -205,6 +208,10 @@ Examples may include:
 - weight values
 - external vs internal link indicators
 - access or visibility flags
+- UI slot information
+- CTA treatment
+- home-link substitution behavior
+- hover expansion behavior
 
 ## Canonical content record
 
@@ -357,11 +364,14 @@ menu_record:
     weight:
     route_name:
     external_link:
+    presentation_role:
+    render_variant:
 
   migration_validation:
     destination_target_present:
     missing_target:
     structure_preserved:
+    presentation_preserved:
 
   details_json:
     optional_enrichment: true

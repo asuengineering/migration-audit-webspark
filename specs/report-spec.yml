@@ -186,6 +186,7 @@ menu_family:
     - menu_link_content
     - menu_tree
     - path_aliases
+    - header_block_configuration
 
   canonical_record:
     export_context:
@@ -205,11 +206,14 @@ menu_family:
       weight: integer
       route_name: string
       external_link: boolean
+      presentation_role: string
+      render_variant: string
 
     migration_validation:
       destination_target_present: boolean
       missing_target: boolean
       structure_preserved: boolean
+      presentation_preserved: boolean
 
     details_json:
       optional_enrichment: true
@@ -220,6 +224,10 @@ menu_family:
         - visibility_flags
         - item_order_source
         - source_destination_mapping
+        - ui_slot
+        - cta_treatment
+        - home_link_substitution
+        - hover_expansion_behavior
 
 constraints:
   semantic_comparison_supported: false
