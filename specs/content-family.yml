@@ -1,0 +1,63 @@
+family:
+  name: content
+  purpose: >
+    Export Drupal content structures in a normalized format suitable
+    for later comparison against WordPress-origin audit exports.
+
+collection:
+  sources:
+    - node
+    - block_content
+    - layout_builder
+    - media_references
+    - taxonomy_references
+    - path_aliases
+
+record_shape:
+  object:
+    entity_type: string
+    bundle: string
+    entity_id: integer
+    uuid: string
+    title: string
+    url: string
+    published: boolean
+    updated: datetime
+    author: string
+
+  structure:
+    layout_builder_enabled: boolean
+    block_count: integer
+    inline_block_count: integer
+    reusable_block_count: integer
+    embedded_component_count: integer
+    media_reference_count: integer
+    taxonomy_reference_count: integer
+
+  dependencies:
+    media_present: boolean
+    taxonomy_present: boolean
+    reusable_components_present: boolean
+    unresolved_dependencies: array
+
+  migration_metadata:
+    source_identifier: string
+    migration_group: string
+    migration_notes: string
+
+  warnings:
+    unsupported_components: array
+    missing_dependencies: array
+    unresolved_references: array
+
+comparison_expectations:
+  supports_structural_equivalency: true
+  supports_semantic_equivalency: false
+  supports_revision_comparison: false
+  supports_translation_comparison: false
+
+implementation_notes:
+  - The exporter should prioritize deterministic output.
+  - The exporter should not attempt to perform migration reconciliation.
+  - The exporter should expose enough structural information for GPT-based comparison.
+  - Layout Builder presence should be acknowledged without exporting rendered markup.
