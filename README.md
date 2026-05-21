@@ -4,9 +4,7 @@ This repository contains the plan for a Drupal module that will eventually produ
 
 ## Current mode
 
-Version 0.1 is being developed in plan-only mode.
-
-This is the design and specification surface for a future formal Drupal module, not the implementation itself.
+Version 0.1 is being developed in plan-only mode with the design and specification surface for a future formal Drupal module.
 
 ## Source of truth
 
