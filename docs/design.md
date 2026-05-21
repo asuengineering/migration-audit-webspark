@@ -139,6 +139,40 @@ Examples may include:
 - relationship warnings
 - rendered relationship visibility indicators
 
+## Media family
+
+The media report should validate that canonical media assets were intentionally migrated into Drupal rather than replaced with derivative copies or disconnected assets.
+
+The report should capture:
+
+- media identifiers
+- filenames
+- canonical URLs
+- MIME types
+- captions and alt text
+- referenced content counts
+- migration validation indicators
+- redirect requirements when public asset paths change
+
+The media report should support reconciliation workflows that verify:
+
+- the original asset exists in Drupal
+- derivative-only copies are not being used unintentionally
+- media remains connected to destination content
+- public-facing asset paths remain stable or are redirected appropriately
+
+Additional Drupal-specific media metadata may optionally be captured in `details_json` payloads.
+
+Examples may include:
+
+- original file paths
+- destination file paths
+- checksums
+- file entity identifiers
+- media bundle types
+- referenced content lists
+- Layout Builder embedding indicators
+
 ## Canonical content record
 
 ```yaml
@@ -239,6 +273,36 @@ taxonomy_relationship_record:
     optional_enrichment: true
 ```
 
+## Canonical media record
+
+```yaml
+media_record:
+  export_context:
+    environment:
+    site_id:
+
+  media:
+    record_type:
+    object_type:
+    object_id:
+    media_id:
+    title:
+    url:
+    filename:
+    mime_type:
+    caption:
+    alt_text:
+
+  migration_validation:
+    canonical_asset_present:
+    derivative_detected:
+    redirect_required:
+    referenced_content_count:
+
+  details_json:
+    optional_enrichment: true
+```
+
 ## Drupal collection targets
 
 The exporter should gather information from:
@@ -247,6 +311,8 @@ The exporter should gather information from:
 - taxonomy terms
 - block content
 - Layout Builder configuration
+- media entities
+- file entities
 - media references
 - taxonomy references
 - path aliases

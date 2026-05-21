@@ -105,6 +105,47 @@ taxonomy_family:
       missing_listing_surface: boolean
       unresolved_references: array
 
+media_family:
+  collection_sources:
+    - media_entity
+    - file_entity
+    - media_references
+    - path_aliases
+
+  canonical_record:
+    export_context:
+      environment: string
+      site_id: integer
+
+    media:
+      record_type: string
+      object_type: string
+      object_id: integer
+      media_id: integer
+      title: string
+      url: string
+      filename: string
+      mime_type: string
+      caption: string
+      alt_text: string
+
+    migration_validation:
+      canonical_asset_present: boolean
+      derivative_detected: boolean
+      redirect_required: boolean
+      referenced_content_count: integer
+
+    details_json:
+      optional_enrichment: true
+      possible_fields:
+        - original_path
+        - destination_path
+        - file_entity_id
+        - media_bundle
+        - checksum
+        - embedded_in_layout_builder
+        - referenced_by
+
 constraints:
   semantic_comparison_supported: false
   revision_analysis_supported: false
