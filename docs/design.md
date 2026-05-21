@@ -89,6 +89,30 @@ The content report should avoid:
 - semantic scoring
 - automated approval decisions
 
+## Taxonomy family
+
+The taxonomy report should capture:
+
+- vocabulary
+- term label
+- term slug
+- canonical URL
+- referenced content count
+- whether an archive or listing surface exists in Drupal
+- taxonomy-related warning states
+
+The taxonomy report is intended to support migration reconciliation for taxonomy archive recreation.
+
+A Drupal migration should intentionally recreate the archive or listing experience associated with important taxonomy structures from WordPress.
+
+The report should therefore help identify:
+
+- terms that exist without an equivalent listing surface
+- archive/listing pages that still need implementation
+- taxonomy structures that are present but incomplete
+
+The taxonomy report should not attempt to serialize full View configurations or rendered archive markup.
+
 ## Canonical content record
 
 ```yaml
@@ -135,17 +159,47 @@ content_record:
     unresolved_references:
 ```
 
+## Canonical taxonomy record
+
+```yaml
+taxonomy_record:
+  vocabulary:
+    machine_name:
+    label:
+
+  term:
+    term_id:
+    uuid:
+    label:
+    slug:
+    canonical_url:
+
+  relationships:
+    referenced_content_count:
+
+  archive_surface:
+    listing_surface_exists:
+    listing_surface_type:
+    listing_surface_identifier:
+
+  warnings:
+    missing_listing_surface:
+    unresolved_references:
+```
+
 ## Drupal collection targets
 
 The exporter should gather information from:
 
 - nodes
+- taxonomy terms
 - block content
 - Layout Builder configuration
 - media references
 - taxonomy references
 - path aliases
 - entity reference fields
+- Views metadata where applicable
 
 ## Future enhancements
 

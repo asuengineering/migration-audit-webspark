@@ -74,6 +74,37 @@ content_family:
       missing_dependencies: array
       unresolved_references: array
 
+taxonomy_family:
+  collection_sources:
+    - taxonomy_term
+    - taxonomy_relationships
+    - path_aliases
+    - views_metadata
+
+  canonical_record:
+    vocabulary:
+      machine_name: string
+      label: string
+
+    term:
+      term_id: integer
+      uuid: string
+      label: string
+      slug: string
+      canonical_url: string
+
+    relationships:
+      referenced_content_count: integer
+
+    archive_surface:
+      listing_surface_exists: boolean
+      listing_surface_type: string
+      listing_surface_identifier: string
+
+    warnings:
+      missing_listing_surface: boolean
+      unresolved_references: array
+
 constraints:
   semantic_comparison_supported: false
   revision_analysis_supported: false
