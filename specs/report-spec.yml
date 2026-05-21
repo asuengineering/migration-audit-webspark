@@ -1,0 +1,73 @@
+module:
+  name: migration_audit_webspark
+  human_name: Migration Audit Webspark
+  purpose: >
+    Produce a Drupal-side migration audit report comparable to the
+    WordPress audit export used during migration reconciliation and UAT.
+
+report:
+  version: 0.1
+  output_formats:
+    - json
+    - csv
+    - ui_summary
+
+  report_families:
+    - content
+    - taxonomy
+    - taxonomy_relationships
+    - media
+    - menus
+    - users
+    - forms
+    - seo
+    - redirects
+    - warnings
+    - summaries
+
+comparison_goals:
+  - mechanical_reconciliation
+  - migration_validation
+  - UAT_support
+  - discrepancy_detection
+
+entity_mapping:
+  node:
+    wordpress_equivalent:
+      - post
+      - page
+      - custom_post_type
+
+  taxonomy_term:
+    wordpress_equivalent:
+      - category
+      - taxonomy_term
+
+  media:
+    wordpress_equivalent:
+      - attachment
+
+  menu_link_content:
+    wordpress_equivalent:
+      - nav_menu_item
+
+report_rules:
+  include_unpublished: true
+  include_orphaned_content: true
+  include_missing_relationships: true
+  include_reference_warnings: true
+
+warning_types:
+  - missing_content
+  - missing_media
+  - missing_taxonomy
+  - broken_menu_reference
+  - unsupported_component
+  - field_mapping_failure
+
+future_components:
+  - paragraph_support
+  - layout_builder_analysis
+  - views_analysis
+  - workflow_state_validation
+  - revision_comparison
