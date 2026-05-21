@@ -14,6 +14,6 @@ Version 0.1 is being developed in plan-only mode with the design and specificati
 
 ## Operating model
 
-Drupal exports a normalized report. WordPress exports a normalized report. A GPT-based comparison workflow performs the reconciliation outside Drupal.
+To complete our UAT process with the necessary degree of accuracy, we will seek to conduct an AI assisted comparison of original and destination sites (WordPress --> Drupal). This module is intended to produce one half of the artifacts needed for that mechanical comparison, with the other half being generated in WordPress.
 
 The module itself should not attempt to decide equivalency; it should capture enough structure for later comparison.
