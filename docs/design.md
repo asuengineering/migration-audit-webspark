@@ -46,6 +46,7 @@ The exporter should therefore expose:
 - reusable component awareness
 - taxonomy relationships
 - media relationships
+- menu relationships
 
 without attempting to serialize full rendered output.
 
@@ -172,6 +173,38 @@ Examples may include:
 - media bundle types
 - referenced content lists
 - Layout Builder embedding indicators
+
+## Menu family
+
+The menu report should capture menu structures and navigation relationships so WordPress menus can be intentionally recreated in Drupal.
+
+The report should capture:
+
+- menu identifiers
+- menu labels
+- menu item titles
+- item URLs
+- parent/child structure
+- item order
+- linkage to destination content where applicable
+- warning states for missing or broken targets
+
+The menu report should help identify:
+
+- menus that exist in the source but are not yet recreated in Drupal
+- menu items that point to missing or changed destinations
+- structural differences that affect navigation fidelity
+
+Additional Drupal-specific menu metadata may optionally be captured in `details_json` payloads.
+
+Examples may include:
+
+- menu link entity identifiers
+- route names
+- parent link identifiers
+- weight values
+- external vs internal link indicators
+- access or visibility flags
 
 ## Canonical content record
 
@@ -303,6 +336,37 @@ media_record:
     optional_enrichment: true
 ```
 
+## Canonical menu record
+
+```yaml
+menu_record:
+  export_context:
+    environment:
+    site_id:
+
+  menu:
+    menu_id:
+    menu_name:
+    label:
+
+  item:
+    menu_item_id:
+    title:
+    url:
+    parent_item_id:
+    weight:
+    route_name:
+    external_link:
+
+  migration_validation:
+    destination_target_present:
+    missing_target:
+    structure_preserved:
+
+  details_json:
+    optional_enrichment: true
+```
+
 ## Drupal collection targets
 
 The exporter should gather information from:
@@ -313,6 +377,8 @@ The exporter should gather information from:
 - Layout Builder configuration
 - media entities
 - file entities
+- menu link content
+- menu tree structures
 - media references
 - taxonomy references
 - path aliases

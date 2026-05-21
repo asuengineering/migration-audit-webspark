@@ -105,6 +105,41 @@ taxonomy_family:
       missing_listing_surface: boolean
       unresolved_references: array
 
+taxonomy_relationships_family:
+  collection_sources:
+    - taxonomy_relationships
+    - entity_reference_fields
+
+  canonical_record:
+    content:
+      entity_type: string
+      bundle: string
+      entity_id: integer
+      uuid: string
+      title: string
+      url: string
+
+    taxonomy:
+      vocabulary_machine_name: string
+      term_id: integer
+      term_label: string
+      term_slug: string
+      canonical_url: string
+
+    relationship:
+      field_name: string
+      relationship_exists: boolean
+
+    details_json:
+      optional_enrichment: true
+      possible_fields:
+        - relationship_cardinality
+        - parent_term_context
+        - field_storage_metadata
+        - multi_value_relationship_structure
+        - relationship_warnings
+        - rendered_relationship_visibility
+
 media_family:
   collection_sources:
     - media_entity
@@ -145,6 +180,46 @@ media_family:
         - checksum
         - embedded_in_layout_builder
         - referenced_by
+
+menu_family:
+  collection_sources:
+    - menu_link_content
+    - menu_tree
+    - path_aliases
+
+  canonical_record:
+    export_context:
+      environment: string
+      site_id: integer
+
+    menu:
+      menu_id: integer
+      menu_name: string
+      label: string
+
+    item:
+      menu_item_id: integer
+      title: string
+      url: string
+      parent_item_id: integer
+      weight: integer
+      route_name: string
+      external_link: boolean
+
+    migration_validation:
+      destination_target_present: boolean
+      missing_target: boolean
+      structure_preserved: boolean
+
+    details_json:
+      optional_enrichment: true
+      possible_fields:
+        - menu_link_entity_id
+        - parent_link_id
+        - access_flags
+        - visibility_flags
+        - item_order_source
+        - source_destination_mapping
 
 constraints:
   semantic_comparison_supported: false
