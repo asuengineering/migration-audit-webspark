@@ -29,25 +29,11 @@ It should not attempt to perform semantic equivalency analysis.
 
 The export should capture enough structural information to support later comparison.
 
-The report should help answer:
-
-> Does Drupal contain a structurally equivalent content construct suitable for migration UAT?
-
 ### Platform-aware reporting
 
 Drupal and WordPress model content differently.
 
-The exporter should therefore expose:
-
-- content structures
-- entity types and bundles
-- Layout Builder awareness
-- dependency awareness
-- reusable component awareness
-- taxonomy relationships
-- media relationships
-
-without attempting to serialize full rendered output.
+The exporter should expose content structures, entity types, dependency awareness, taxonomy relationships, and media relationships without attempting to serialize full rendered output.
 
 ## Report families
 
@@ -65,129 +51,38 @@ without attempting to serialize full rendered output.
 
 ## Content family
 
-The content report should capture:
+The content report should capture entity types, bundles, identifiers, URLs, publication status, structural summaries, Layout Builder usage, block usage, media references, taxonomy references, unresolved dependencies, migration metadata, and warning states.
 
-- entity type
-- bundle
-- identifiers
-- URLs
-- publication status
-- structural summaries
-- Layout Builder usage
-- block usage
-- media references
-- taxonomy references
-- unresolved dependencies
-- migration metadata
-- warning states
+Each report family should include:
 
-The content report should avoid:
-
-- full-text comparison
-- revision analysis
-- translation analysis
-- semantic scoring
-- automated approval decisions
+- a text description of the report purpose
+- a canonical record definition
+- guidance for optional details_json enrichment
 
 ## Taxonomy family
 
-The taxonomy report should capture:
-
-- vocabulary
-- term label
-- term slug
-- canonical URL
-- referenced content count
-- whether an archive or listing surface exists in Drupal
-- taxonomy-related warning states
-
-The taxonomy report is intended to support migration reconciliation for taxonomy archive recreation.
-
-A Drupal migration should intentionally recreate the archive or listing experience associated with important taxonomy structures from WordPress.
-
-The report should therefore help identify:
-
-- terms that exist without an equivalent listing surface
-- archive/listing pages that still need implementation
-- taxonomy structures that are present but incomplete
-
-The taxonomy report should not attempt to serialize full View configurations or rendered archive markup.
+The taxonomy report should capture vocabulary, term labels, slugs, canonical URLs, referenced content counts, and whether archive or listing surfaces exist in Drupal.
 
 ## Taxonomy relationships family
 
 The taxonomy relationships report should provide a normalized export of content-to-term relationships.
 
-The report should remain intentionally lightweight at the top-level export structure while still supporting deeper contextual enrichment through optional `details_json` metadata.
+The stable structure should support content identifiers, content URLs, vocabulary identifiers, term identifiers, relationship field names, and relationship existence validation.
 
-The stable export structure should support:
-
-- content identifiers
-- content URLs
-- vocabulary identifiers
-- term identifiers
-- relationship field names
-- relationship existence validation
-
-Additional Drupal-specific relationship context may optionally be captured in `details_json` payloads where useful for later GPT-based reconciliation.
-
-Examples may include:
-
-- relationship cardinality
-- parent or hierarchical term context
-- field storage metadata
-- multi-value relationship structures
-- relationship warnings
-- rendered relationship visibility indicators
+Additional Drupal-specific relationship context may optionally be captured in details_json payloads.
 
 ## Canonical content record
 
-```yaml
 content_record:
-  export_context:
-    platform:
-    export_timestamp:
-    environment:
-
   object:
     entity_type:
     bundle:
     entity_id:
-    uuid:
     title:
     url:
-    published:
-    updated:
-    author:
-
-  structure:
-    layout_builder_enabled:
-    block_count:
-    inline_block_count:
-    reusable_block_count:
-    embedded_component_count:
-    media_reference_count:
-    taxonomy_reference_count:
-
-  dependencies:
-    media_present:
-    taxonomy_present:
-    reusable_components_present:
-    unresolved_dependencies:
-
-  migration_metadata:
-    source_identifier:
-    migration_group:
-    migration_notes:
-
-  warnings:
-    unsupported_components:
-    missing_dependencies:
-    unresolved_references:
-```
 
 ## Canonical taxonomy record
 
-```yaml
 taxonomy_record:
   vocabulary:
     machine_name:
@@ -195,44 +90,29 @@ taxonomy_record:
 
   term:
     term_id:
-    uuid:
     label:
     slug:
     canonical_url:
 
-  relationships:
-    referenced_content_count:
+## Canonical taxonomy relationship record
 
-  archive_surface:
-    listing_surface_exists:
-    listing_surface_type:
-    listing_surface_identifier:
+taxonomy_relationship_record:
+  content:
+    entity_type:
+    bundle:
+    entity_id:
+    title:
+    url:
 
-  warnings:
-    missing_listing_surface:
-    unresolved_references:
-```
+  taxonomy:
+    vocabulary_machine_name:
+    term_id:
+    term_label:
+    term_slug:
 
-## Drupal collection targets
+  relationship:
+    field_name:
+    relationship_exists:
 
-The exporter should gather information from:
-
-- nodes
-- taxonomy terms
-- block content
-- Layout Builder configuration
-- media references
-- taxonomy references
-- path aliases
-- entity reference fields
-- Views metadata where applicable
-
-## Future enhancements
-
-Potential future enhancements may include:
-
-- Paragraphs support
-- Views dependency awareness
-- reusable component fingerprinting
-- field-level structural summaries
-- cross-site migration identifiers
+  details_json:
+    optional_enrichment: true
