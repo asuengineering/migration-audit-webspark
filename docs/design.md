@@ -113,6 +113,32 @@ The report should therefore help identify:
 
 The taxonomy report should not attempt to serialize full View configurations or rendered archive markup.
 
+## Taxonomy relationships family
+
+The taxonomy relationships report should provide a normalized export of content-to-term relationships.
+
+The report should remain intentionally lightweight at the top-level export structure while still supporting deeper contextual enrichment through optional `details_json` metadata.
+
+The stable export structure should support:
+
+- content identifiers
+- content URLs
+- vocabulary identifiers
+- term identifiers
+- relationship field names
+- relationship existence validation
+
+Additional Drupal-specific relationship context may optionally be captured in `details_json` payloads where useful for later GPT-based reconciliation.
+
+Examples may include:
+
+- relationship cardinality
+- parent or hierarchical term context
+- field storage metadata
+- multi-value relationship structures
+- relationship warnings
+- rendered relationship visibility indicators
+
 ## Canonical content record
 
 ```yaml
