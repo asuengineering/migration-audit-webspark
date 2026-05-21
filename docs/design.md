@@ -1,74 +1,143 @@
 # Migration Audit Webspark Design
 
-## What we are building
+## Objective
 
-We are building a Drupal-side audit exporter that produces a normalized report in the same general shape as the WordPress-side audit export used in migration work.
+The goal of this project is to define a Drupal-side exporter that produces a normalized migration audit report comparable in shape to the existing WordPress-side export.
 
-The Drupal module is not the comparison engine.
-
-Its job is to collect structural, dependency, and inventory information from Drupal and emit that information in a deterministic, machine-readable form that can later be compared against a WordPress export by GPT or another reconciliation workflow.
+The report is intended for migration reconciliation and UAT workflows.
 
 ## Operating model
 
-1. WordPress produces an audit export.
-2. Drupal produces an audit export.
-3. A GPT-based comparison workflow evaluates the two exports.
-4. The comparison workflow produces migration reconciliation findings and UAT guidance.
+The Drupal module is an exporter, not a comparison engine.
 
-## Design intent
+Workflow:
 
-The Drupal exporter should answer questions such as:
+1. Generate a WordPress audit export.
+2. Generate a Drupal audit export.
+3. Provide both exports to a GPT-based comparison workflow.
+4. Produce reconciliation findings and UAT guidance.
 
-- What content exists in Drupal?
-- What Drupal entity type and bundle represent it?
-- What structural components does it use?
-- What dependencies does it have?
-- What warnings should a reviewer see?
+## Design principles
 
-The exporter should not attempt to decide whether Drupal and WordPress are equivalent inside the module itself.
+### Export-first architecture
 
-## Report shape
+The Drupal module should focus on deterministic export generation.
 
-The export should be organized into the same broad families used by the migration audit process:
+It should not attempt to perform semantic equivalency analysis.
+
+### Structural equivalency support
+
+The export should capture enough structural information to support later comparison.
+
+The report should help answer:
+
+> Does Drupal contain a structurally equivalent content construct suitable for migration UAT?
+
+### Platform-aware reporting
+
+Drupal and WordPress model content differently.
+
+The exporter should therefore expose:
+
+- content structures
+- entity types and bundles
+- Layout Builder awareness
+- dependency awareness
+- reusable component awareness
+- taxonomy relationships
+- media relationships
+
+without attempting to serialize full rendered output.
+
+## Report families
 
 - content
 - taxonomy
-- taxonomy relationships
+- taxonomy_relationships
 - media
 - menus
 - users
 - forms
-- SEO
+- seo
 - redirects
 - warnings
 - summaries
 
 ## Content family
 
-The content family is the most important part of the export at this stage.
-
-It should collect Drupal-side content in a normalized form that includes:
+The content report should capture:
 
 - entity type
 - bundle
 - identifiers
-- URL or alias
+- URLs
 - publication status
-- author metadata
-- update metadata
-- Layout Builder presence
+- structural summaries
+- Layout Builder usage
 - block usage
 - media references
 - taxonomy references
 - unresolved dependencies
-- migration notes
+- migration metadata
 - warning states
 
-The content family should be detailed enough for comparison later, but it should not attempt to reproduce rendered pages or perform semantic matching.
+The content report should avoid:
 
-## Structural scope
+- full-text comparison
+- revision analysis
+- translation analysis
+- semantic scoring
+- automated approval decisions
 
-The exporter should include enough of Drupal’s content model to represent common Webspark page constructions, including:
+## Canonical content record
+
+```yaml
+content_record:
+  export_context:
+    platform:
+    export_timestamp:
+    environment:
+
+  object:
+    entity_type:
+    bundle:
+    entity_id:
+    uuid:
+    title:
+    url:
+    published:
+    updated:
+    author:
+
+  structure:
+    layout_builder_enabled:
+    block_count:
+    inline_block_count:
+    reusable_block_count:
+    embedded_component_count:
+    media_reference_count:
+    taxonomy_reference_count:
+
+  dependencies:
+    media_present:
+    taxonomy_present:
+    reusable_components_present:
+    unresolved_dependencies:
+
+  migration_metadata:
+    source_identifier:
+    migration_group:
+    migration_notes:
+
+  warnings:
+    unsupported_components:
+    missing_dependencies:
+    unresolved_references:
+```
+
+## Drupal collection targets
+
+The exporter should gather information from:
 
 - nodes
 - block content
@@ -78,16 +147,12 @@ The exporter should include enough of Drupal’s content model to represent comm
 - path aliases
 - entity reference fields
 
-## Deliberate exclusions
+## Future enhancements
 
-The exporter should not attempt to include:
+Potential future enhancements may include:
 
-- full-text equivalency scoring
-- revision analysis
-- translation analysis
-- rendered markup capture
-- automated migration approval decisions
-
-## Success criteria
-
-The project is successful if the Drupal export can be handed to a GPT-based comparison workflow and used to determine what exists, what is structurally comparable, and what still needs human review during migration UAT.
+- Paragraphs support
+- Views dependency awareness
+- reusable component fingerprinting
+- field-level structural summaries
+- cross-site migration identifiers

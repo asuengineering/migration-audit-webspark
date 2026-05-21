@@ -1,18 +1,16 @@
 module:
   name: migration_audit_webspark
-  human_name: Migration Audit Webspark
   purpose: >
-    Produce a Drupal-side migration audit report comparable to the
-    WordPress audit export used during migration reconciliation and UAT.
+    Produce a normalized Drupal-side migration audit export
+    suitable for GPT-based reconciliation against WordPress exports.
+
+operating_model:
+  comparison_location: external
+  comparison_engine: GPT
+  exporter_role: structural_inventory
 
 report:
-  version: 0.1
-  output_formats:
-    - json
-    - csv
-    - ui_summary
-
-  report_families:
+  families:
     - content
     - taxonomy
     - taxonomy_relationships
@@ -25,49 +23,59 @@ report:
     - warnings
     - summaries
 
-comparison_goals:
-  - mechanical_reconciliation
-  - migration_validation
-  - UAT_support
-  - discrepancy_detection
+content_family:
+  collection_sources:
+    - node
+    - block_content
+    - layout_builder
+    - media_references
+    - taxonomy_references
+    - path_aliases
 
-entity_mapping:
-  node:
-    wordpress_equivalent:
-      - post
-      - page
-      - custom_post_type
+  canonical_record:
+    export_context:
+      platform: string
+      export_timestamp: datetime
+      environment: string
 
-  taxonomy_term:
-    wordpress_equivalent:
-      - category
-      - taxonomy_term
+    object:
+      entity_type: string
+      bundle: string
+      entity_id: integer
+      uuid: string
+      title: string
+      url: string
+      published: boolean
+      updated: datetime
+      author: string
 
-  media:
-    wordpress_equivalent:
-      - attachment
+    structure:
+      layout_builder_enabled: boolean
+      block_count: integer
+      inline_block_count: integer
+      reusable_block_count: integer
+      embedded_component_count: integer
+      media_reference_count: integer
+      taxonomy_reference_count: integer
 
-  menu_link_content:
-    wordpress_equivalent:
-      - nav_menu_item
+    dependencies:
+      media_present: boolean
+      taxonomy_present: boolean
+      reusable_components_present: boolean
+      unresolved_dependencies: array
 
-report_rules:
-  include_unpublished: true
-  include_orphaned_content: true
-  include_missing_relationships: true
-  include_reference_warnings: true
+    migration_metadata:
+      source_identifier: string
+      migration_group: string
+      migration_notes: string
 
-warning_types:
-  - missing_content
-  - missing_media
-  - missing_taxonomy
-  - broken_menu_reference
-  - unsupported_component
-  - field_mapping_failure
+    warnings:
+      unsupported_components: array
+      missing_dependencies: array
+      unresolved_references: array
 
-future_components:
-  - paragraph_support
-  - layout_builder_analysis
-  - views_analysis
-  - workflow_state_validation
-  - revision_comparison
+constraints:
+  semantic_comparison_supported: false
+  revision_analysis_supported: false
+  translation_analysis_supported: false
+  rendered_markup_export_supported: false
