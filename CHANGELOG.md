@@ -1,5 +1,56 @@
 # Changelog
 
+## Version 0.2 — Initial implementation-ready specification
+
+### Specification maturity
+
+- Completed the initial architectural discovery and specification phase.
+- Established implementation-ready planning surfaces for a future Drupal audit exporter.
+- Clarified structural parity expectations between WordPress and Drupal exports.
+- Established GPT-based reconciliation as the intended downstream comparison workflow.
+
+### Export architecture
+
+- Formalized CSV-based export family structure.
+- Added ZIP packaging expectations for export artifacts.
+- Added authenticated admin export workflow expectations.
+- Allowed implementation flexibility for Drupal-native export-generation approaches.
+
+### Content reporting
+
+- Clarified node-centric content export model.
+- Established structural enrichment guidance for Layout Builder and related Drupal structures.
+- Clarified reusable component handling expectations.
+
+### Taxonomy reporting
+
+- Added taxonomy archive/listing surface validation concepts.
+- Added taxonomy listing surface URL expectations.
+- Added taxonomy relationship export guidance.
+
+### Media reporting
+
+- Added canonical asset validation guidance.
+- Added WordPress derivative/srcset detection expectations.
+- Added redirect-generation support expectations for migrated media paths.
+- Added source/destination path tracking expectations.
+
+### Menu reporting
+
+- Added presentation-role and render-variant concepts.
+- Added Renovation-theme investigation requirements for specialized menu object mappings.
+
+### Enhancement-family planning
+
+- Added phased implementation expectations for forms, redirects, and SEO reporting.
+- Identified Webform, Redirect, and Pathauto as expected initial integration surfaces.
+
+### Warning and operational logging model
+
+- Separated migration/UAT warnings from operational export warnings.
+- Added lightweight operational export logging expectations.
+- Clarified that recoverable export issues should not necessarily terminate report generation.
+
 ## Version 0.1 — Plan-only phase
 
 ### Repository purpose established
