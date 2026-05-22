@@ -88,14 +88,7 @@ The Drupal `content` family should be node-centric.
 
 Each content record should represent a Drupal node as the primary comparable migration object, similar in role to WordPress posts, pages, and post-like custom post types within the existing WordPress export process.
 
-The exporter may enrich node records with structural metadata derived from related Drupal systems, including:
-
-- Layout Builder usage
-- block usage summaries
-- embedded media references
-- taxonomy references
-- path aliases
-- entity reference dependencies
+The exporter may enrich node records with structural metadata derived from related Drupal systems.
 
 These related structures should not be promoted to standalone `content` records unless they belong to a separate dedicated report family.
 
@@ -119,6 +112,7 @@ The taxonomy report should capture:
 - canonical URL
 - referenced content count
 - whether an archive or listing surface exists in Drupal
+- the public URL for that listing surface when one exists
 - taxonomy-related warning states
 
 The taxonomy report is intended to support migration reconciliation for taxonomy archive recreation.
@@ -133,82 +127,19 @@ The report should therefore help identify:
 
 The taxonomy report should not attempt to serialize full View configurations or rendered archive markup.
 
-## Taxonomy relationships family
-
-The taxonomy relationships report should provide a normalized export of content-to-term relationships.
-
-The report should remain intentionally lightweight at the top-level export structure while still supporting deeper contextual enrichment through optional `details_json` metadata.
-
-The stable export structure should support:
-
-- content identifiers
-- content URLs
-- vocabulary identifiers
-- term identifiers
-- relationship field names
-- relationship existence validation
-
-Additional Drupal-specific relationship context may optionally be captured in `details_json` payloads where useful for later GPT-based reconciliation.
-
-Examples may include:
-
-- relationship cardinality
-- parent or hierarchical term context
-- field storage metadata
-- multi-value relationship structures
-- relationship warnings
-- rendered relationship visibility indicators
-
-## Media family
-
-The media report should validate that canonical media assets were intentionally migrated into Drupal rather than replaced with derivative copies or disconnected assets.
-
-The report should capture:
-
-- media identifiers
-- filenames
-- canonical URLs
-- MIME types
-- captions and alt text
-- referenced content counts
-- migration validation indicators
-- redirect requirements when public asset paths change
-
-The media report should support reconciliation workflows that verify:
-
-- the original asset exists in Drupal
-- derivative-only copies are not being used unintentionally
-- media remains connected to destination content
-- public-facing asset paths remain stable or are redirected appropriately
-
-Additional Drupal-specific media metadata may optionally be captured in `details_json` payloads.
-
-Examples may include:
-
-- original file paths
-- destination file paths
-- checksums
-- file entity identifiers
-- media bundle types
-- referenced content lists
-- Layout Builder embedding indicators
-
 ## Menu family
 
 The menu report should capture menu structures, navigation relationships, and presentation behavior so WordPress menus can be intentionally recreated in Drupal.
 
-The report should capture:
+The most important WordPress-side menu settings are metadata values that transform a menu link into a specialized presentation object such as:
 
-- menu identifiers
-- menu labels
-- menu item titles
-- item URLs
-- parent/child structure
-- item order
-- linkage to destination content where applicable
-- presentation role of each item
-- whether the item should behave as a link, an action control, a heading, or a home-link substitution
-- warning states for missing or broken targets
+- a CTA/button
+- a heading
+- a social media icon object
+
+Those mappings may be WebSpark-specific.
+
+Before the Drupal module can fully implement `presentation_role` and `render_variant`, the implementation should investigate how the Renovation theme stores and exposes those menu object structures.
 
 The menu report should help identify:
 
@@ -217,202 +148,43 @@ The menu report should help identify:
 - items that should render with a different presentation behavior than plain navigation links
 - structural differences that affect navigation fidelity
 
-Additional Drupal-specific menu metadata may optionally be captured in `details_json` payloads.
+## Forms, SEO, and redirect families
+
+These report families are intended as later enhancement phases after the initial core export families are implemented.
+
+The anticipated source modules are:
+
+- forms: Webform
+- redirects: Redirect and Pathauto
+- seo: related SEO-oriented modules and configuration
+
+The exact module inventory should be validated against the WebSpark Drupal distribution composer configuration before implementation begins.
+
+## Warning model
+
+Warnings included in the export should be treated as audit-trail objects used for migration reconciliation and UAT workflows.
 
 Examples may include:
 
-- menu link entity identifiers
-- route names
-- parent link identifiers
-- weight values
-- external vs internal link indicators
-- access or visibility flags
-- UI slot information
-- CTA treatment
-- home-link substitution behavior
-- hover expansion behavior
+- unresolved references
+- unsupported components
+- missing listing surfaces
+- incomplete structural mappings
 
-## Canonical content record
+These warnings should not necessarily fail report generation.
 
-```yaml
-content_record:
-  export_context:
-    platform:
-    export_timestamp:
-    environment:
+Operational export issues should be handled separately from migration/UAT warnings.
 
-  object:
-    entity_type:
-    bundle:
-    entity_id:
-    uuid:
-    title:
-    url:
-    published:
-    updated:
-    author:
+The exporter should maintain a lightweight operational warning log describing recoverable extraction issues encountered during report generation.
 
-  structure:
-    layout_builder_enabled:
-    block_count:
-    inline_block_count:
-    reusable_block_count:
-    embedded_component_count:
-    media_reference_count:
-    taxonomy_reference_count:
+Examples may include:
 
-  dependencies:
-    media_present:
-    taxonomy_present:
-    reusable_components_present:
-    unresolved_dependencies:
+- inaccessible entities
+- partial extraction failures
+- malformed configuration
+- timeout conditions
 
-  migration_metadata:
-    source_identifier:
-    migration_group:
-    migration_notes:
-
-  warnings:
-    unsupported_components:
-    missing_dependencies:
-    unresolved_references:
-```
-
-## Canonical taxonomy record
-
-```yaml
-taxonomy_record:
-  vocabulary:
-    machine_name:
-    label:
-
-  term:
-    term_id:
-    uuid:
-    label:
-    slug:
-    canonical_url:
-
-  relationships:
-    referenced_content_count:
-
-  archive_surface:
-    listing_surface_exists:
-    listing_surface_type:
-    listing_surface_identifier:
-
-  warnings:
-    missing_listing_surface:
-    unresolved_references:
-```
-
-## Canonical taxonomy relationship record
-
-```yaml
-taxonomy_relationship_record:
-  content:
-    entity_type:
-    bundle:
-    entity_id:
-    title:
-    url:
-
-  taxonomy:
-    vocabulary_machine_name:
-    term_id:
-    term_label:
-    term_slug:
-    canonical_url:
-
-  relationship:
-    field_name:
-    relationship_exists:
-
-  details_json:
-    optional_enrichment: true
-```
-
-## Canonical media record
-
-```yaml
-media_record:
-  export_context:
-    environment:
-    site_id:
-
-  media:
-    record_type:
-    object_type:
-    object_id:
-    media_id:
-    title:
-    url:
-    filename:
-    mime_type:
-    caption:
-    alt_text:
-
-  migration_validation:
-    canonical_asset_present:
-    derivative_detected:
-    redirect_required:
-    referenced_content_count:
-
-  details_json:
-    optional_enrichment: true
-```
-
-## Canonical menu record
-
-```yaml
-menu_record:
-  export_context:
-    environment:
-    site_id:
-
-  menu:
-    menu_id:
-    menu_name:
-    label:
-
-  item:
-    menu_item_id:
-    title:
-    url:
-    parent_item_id:
-    weight:
-    route_name:
-    external_link:
-    presentation_role:
-    render_variant:
-
-  migration_validation:
-    destination_target_present:
-    missing_target:
-    structure_preserved:
-    presentation_preserved:
-
-  details_json:
-    optional_enrichment: true
-```
-
-## Drupal collection targets
-
-The exporter should gather information from:
-
-- nodes
-- taxonomy terms
-- block content
-- Layout Builder configuration
-- media entities
-- file entities
-- menu link content
-- menu tree structures
-- media references
-- taxonomy references
-- path aliases
-- entity reference fields
-- Views metadata where applicable
+Operational warnings should provide traceability when exported data is incomplete, missing, or partially derived without necessarily terminating report generation.
 
 ## Future enhancements
 
@@ -423,3 +195,4 @@ Potential future enhancements may include:
 - reusable component fingerprinting
 - field-level structural summaries
 - cross-site migration identifiers
+- forms, SEO, and redirect family implementation

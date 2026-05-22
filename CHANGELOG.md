@@ -64,6 +64,20 @@
 - Added presentation-aware menu auditing.
 - Added CTA/button and home-link behavior concepts.
 - Added canonical menu record definition.
+- Added Renovation theme investigation requirements for menu presentation-role mappings.
+
+### Forms, SEO, and redirect planning
+
+- Planned Webform integration for forms reporting.
+- Planned Redirect and Pathauto integration for redirect reporting.
+- Documented SEO reporting as a future enhancement surface.
+- Established WebSpark composer configuration as the source of truth for module inventory validation.
+
+### Warning model planning
+
+- Clarified separation between migration/UAT warnings and operational export warnings.
+- Established warnings as audit-trail objects rather than report-failure conditions.
+- Added lightweight operational export logging expectations for incomplete or partially-derived report data.
 
 ### Repository structure refinement
 
