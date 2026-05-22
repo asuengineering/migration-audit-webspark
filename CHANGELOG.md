@@ -12,6 +12,8 @@
 - Drupal exporter defined as a report-generation system only.
 - GPT-based workflows defined as the comparison and reconciliation layer.
 - Established normalized export philosophy rather than semantic comparison inside Drupal.
+- Clarified loose parity reporting expectations between Drupal and WordPress exports.
+- Established that Drupal-native structures should be exported with stable identifiers, URLs, labels, and relationship metadata rather than strict field parity requirements.
 
 ### Canonical report families planned
 
@@ -41,6 +43,7 @@
 - Planned taxonomy archive/listing auditing.
 - Added archive-surface validation concepts.
 - Added canonical taxonomy record definition.
+- Added taxonomy listing surface URL support for visual comparison and redirect planning workflows.
 
 ### Taxonomy relationship report planning
 

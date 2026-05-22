@@ -10,6 +10,19 @@ operating_model:
   exporter_role: structural_inventory
 
 report:
+  parity_model: loose_structural_parity
+
+  parity_guidance:
+    - >
+      The exporter should prioritize Drupal-native structural reporting
+      over strict field parity with WordPress exports.
+    - >
+      Exported records should provide stable identifiers, URLs, labels,
+      and relationship metadata suitable for later GPT-based reconciliation.
+    - >
+      Structural interpretation and semantic reconciliation should occur
+      within downstream comparison workflows rather than inside Drupal.
+
   families:
     - content
     - taxonomy
@@ -116,6 +129,7 @@ taxonomy_family:
       listing_surface_exists: boolean
       listing_surface_type: string
       listing_surface_identifier: string
+      listing_surface_url: string
 
     warnings:
       missing_listing_surface: boolean
