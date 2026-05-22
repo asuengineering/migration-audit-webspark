@@ -33,6 +33,8 @@
 - Added Layout Builder awareness.
 - Added dependency awareness.
 - Added canonical content record definition.
+- Clarified node-centric content export model.
+- Clarified that Layout Builder and related structures should enrich node records rather than become standalone content records.
 
 ### Taxonomy report planning
 

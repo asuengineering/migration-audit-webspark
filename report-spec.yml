@@ -24,6 +24,22 @@ report:
     - summaries
 
 content_family:
+  primary_record_model: node_centric
+
+  implementation_notes:
+    - >
+      Each content record should represent a Drupal node as the
+      primary comparable migration object.
+    - >
+      Layout Builder structures, embedded media, taxonomy references,
+      path aliases, and related dependency metadata should be treated
+      as structural enrichment attached to node records rather than
+      standalone content records.
+    - >
+      Reusable blocks and other non-node entities may exist in separate
+      report families but should not be promoted into the content family
+      by default.
+
   collection_sources:
     - node
     - block_content

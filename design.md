@@ -82,6 +82,25 @@ The content report should capture:
 - migration metadata
 - warning states
 
+### Node-centric content model decision
+
+The Drupal `content` family should be node-centric.
+
+Each content record should represent a Drupal node as the primary comparable migration object, similar in role to WordPress posts, pages, and post-like custom post types within the existing WordPress export process.
+
+The exporter may enrich node records with structural metadata derived from related Drupal systems, including:
+
+- Layout Builder usage
+- block usage summaries
+- embedded media references
+- taxonomy references
+- path aliases
+- entity reference dependencies
+
+These related structures should not be promoted to standalone `content` records unless they belong to a separate dedicated report family.
+
+The purpose of this decision is to preserve structural comparability with the WordPress export while avoiding overly granular exports of Drupal implementation details that are not useful for migration reconciliation workflows.
+
 The content report should avoid:
 
 - full-text comparison
