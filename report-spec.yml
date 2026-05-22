@@ -23,6 +23,15 @@ report:
       Structural interpretation and semantic reconciliation should occur
       within downstream comparison workflows rather than inside Drupal.
 
+  export_format:
+    family_format: csv
+    packaging: zip
+    artifact_strategy: separate_family_exports
+
+  delivery:
+    authenticated_admin_interface: true
+    implementation_flexibility_allowed: true
+
   families:
     - content
     - taxonomy
@@ -193,6 +202,11 @@ media_family:
       mime_type: string
       caption: string
       alt_text: string
+      source_is_original_upload: boolean
+      source_path: string
+      destination_path: string
+      redirect_source_url: string
+      redirect_target_url: string
 
     migration_validation:
       canonical_asset_present: boolean
@@ -210,6 +224,7 @@ media_family:
         - checksum
         - embedded_in_layout_builder
         - referenced_by
+        - wordpress_srcset_derivative_detected
 
 menu_family:
   collection_sources:

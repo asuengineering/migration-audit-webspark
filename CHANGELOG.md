@@ -57,6 +57,8 @@
 - Added derivative-media detection concepts.
 - Added redirect/path-stability concerns.
 - Added canonical media record definition.
+- Clarified that original WordPress uploads should be distinguished from generated thumbnail or srcset derivatives.
+- Added source/destination path expectations for redirect generation workflows.
 
 ### Menu report planning
 
@@ -78,6 +80,13 @@
 - Clarified separation between migration/UAT warnings and operational export warnings.
 - Established warnings as audit-trail objects rather than report-failure conditions.
 - Added lightweight operational export logging expectations for incomplete or partially-derived report data.
+
+### Operational export planning
+
+- Clarified CSV-based export expectations.
+- Added ZIP packaging expectations for export artifacts.
+- Added authenticated admin export interface expectations.
+- Allowed implementation flexibility for Drupal-native export generation workflows.
 
 ### Repository structure refinement
 
